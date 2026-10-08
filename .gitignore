@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+_backup_before_day*/
+
+# Real secrets -- .env.example is the committed template.
+.env
+
+# Runtime data: SQLite DBs + uploaded PDFs.
+app/storage/
+
+# Generated eval output, not source.
+evals/reports/

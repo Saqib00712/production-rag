@@ -1,0 +1,48 @@
+# Day 18 (Day 20: image is now built from production-only dependencies --
+# see Dockerfile -- so `exec api pytest` below needs the dev variant).
+#
+#   docker compose up --build        # build the image and start the API on :8000
+#   docker compose exec api python scripts/manage_keys.py create --tenant you --label "my key"
+#   docker compose down              # stop (add -v to also delete the rag_storage volume)
+#
+#   # To run the test suite INSIDE a container (pytest etc. aren't in the
+#   # default image anymore -- see Dockerfile's DEPS_FILE build arg):
+#   docker build --build-arg DEPS_FILE=requirements-dev.txt -t production-rag:dev .
+#   docker run --rm production-rag:dev pytest
+#
+# No .env file is required to start the container -- OPENAI_API_KEY defaults
+# to empty, which is enough to boot and hit /health (see app/main.py's
+# docstring: it deliberately has zero dependencies). You'll need a real key
+# in a .env file (or exported in your shell) before /documents/upload,
+# /ask, or anything embedding/LLM-backed will actually work -- Compose
+# reads a .env file at this same path automatically for the ${...}
+# substitutions below, so `cp .env.example .env` + filling in your key is
+# all that's needed; nothing else in this file changes.
+services:
+  api:
+    build: .
+    image: production-rag:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - AUTO_BOOTSTRAP_DEV_KEY=${AUTO_BOOTSTRAP_DEV_KEY:-true}
+    volumes:
+      # Everything under app/storage/ (every SQLite DB + raw uploaded
+      # PDFs) lives in this ONE named volume, so a rebuild or restart never
+      # loses tenants, documents, conversations, or memories. Mirrors the
+      # paths app/config.py's Settings already default to -- no env var
+      # overrides needed for this to just work.
+      - rag_storage:/app/app/storage
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+volumes:
+  rag_storage:

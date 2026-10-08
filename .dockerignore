@@ -1,0 +1,22 @@
+# Keeps the build context small and the image free of local state,
+# backups, and secrets -- mirrors the exclude list scripts/*.py's
+# installer builders already use for the same reasons.
+__pycache__
+*.pyc
+.pytest_cache
+.git
+.venv
+venv
+_backup_before_day*
+
+# Runtime data: SQLite DBs + uploaded PDFs. Baking these into the image
+# would ship one container's data inside every future image build --
+# this is exactly what the docker-compose volume (app/storage) is for.
+app/storage
+
+# Generated, not source.
+evals/reports
+
+# Secrets -- never baked into an image layer. Real config is passed at
+# `docker run`/`docker compose up` time via environment variables instead.
+.env

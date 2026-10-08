@@ -1,0 +1,11 @@
+[
+  {"id": "q1", "question": "How many days do I have to request a refund?", "expected_pages": [1], "expected_keywords": ["30", "thirty"]},
+  {"id": "q2", "question": "What serial number is required for a warranty claim?", "expected_pages": [2], "expected_keywords": ["ERR-4471"]},
+  {"id": "q3", "question": "How long does standard shipping take?", "expected_pages": [3], "expected_keywords": ["five", "seven"]},
+  {"id": "q4", "question": "Can I ask for my personal data to be deleted?", "expected_pages": [4], "expected_keywords": ["delet"]},
+  {"id": "q5", "question": "What payment methods are accepted?", "expected_pages": [5], "expected_keywords": ["visa", "mastercard", "paypal"]},
+  {"id": "q6", "question": "How do I reset my password?", "expected_pages": [6], "expected_keywords": ["reset"]},
+  {"id": "q7", "question": "How long does the battery last?", "expected_pages": [7], "expected_keywords": ["twelve", "hours"]},
+  {"id": "q8", "question": "What days is customer support available?", "expected_pages": [8], "expected_keywords": ["monday", "friday"]},
+  {"id": "q9", "question": "What is the CEO's name and the company's annual revenue?", "expected_pages": [], "notes": "Intentionally unanswerable: not covered anywhere in the document. The system should refuse."}
+]

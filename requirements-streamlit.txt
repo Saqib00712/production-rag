@@ -1,0 +1,6 @@
+# Optional: the Streamlit frontend (frontend/streamlit_app.py). Not needed
+# for the API itself, the browser RAG Console, or any of Days 1-21.
+#   pip install -r requirements-streamlit.txt
+#   streamlit run frontend/streamlit_app.py
+streamlit>=1.38.0
+requests>=2.32.0
