@@ -9,3 +9,5 @@ prometheus_client>=0.20.0
 python-multipart==0.0.9
 openai>=1.51.0,<2
 tiktoken>=0.8.0
+streamlit>=1.38.0
+requests>=2.32.0
